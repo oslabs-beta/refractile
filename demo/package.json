@@ -1,0 +1,19 @@
+{
+  "name": "refractile",
+  "version": "1.0.0",
+  "description": "Polyglossic middleware for Express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mateolopcas/refractile.git"
+  },
+  "author": "ToadOS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mateolopcas/refractile/issues"
+  },
+  "homepage": "https://github.com/mateolopcas/refractile#readme"
+}
