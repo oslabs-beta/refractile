@@ -1,8 +1,14 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { ExpressMWare } from '../../types';
 
 // Returns a promise that resolves to a WebAssembly instance
 type FibInstance = {
   _fibonacci: (input: number) => number;
+};
+
+type FibController = {
+  fibJS: ExpressMWare;
+  fibC: ExpressMWare;
 };
 
 const instance: Promise<FibInstance> =
