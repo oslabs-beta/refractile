@@ -1,12 +1,20 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 
 
-const fibonacci = (num: number): number => {
-  if (num < 2) {
-    return num;
-  } else {
-    return fibonacci(num - 1) + fibonacci(num - 2);
+// const fibonacci = (num: number): number => {
+//   if (num < 2) {
+//     return num;
+//   } else {
+//     return fibonacci(num - 1) + fibonacci(num - 2);
+//   }
+// }
+
+function fibonacci(element: number) {
+  const sequence = [0, 1];
+  for (let i = 2; i <= element; i++) {
+    sequence[i] = sequence[i - 2] + sequence[i - 1];
   }
+  return sequence[element];
 }
 
 export const fibController = {
@@ -16,7 +24,6 @@ export const fibController = {
     res.locals.result = {
       result: fibResult
     }
-    console.log(res.locals.result)
     next()
   }
 }

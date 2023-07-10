@@ -9,7 +9,6 @@ app.use(express.json());
 app.get('/api/fib-js',
   fibController.fibJS,
   (req: Request, res: Response) => {
-    console.log(res.locals.result)
     return res.status(200).json(res.locals.result)
   }
 )
