@@ -1,11 +1,11 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 
 // Returns a promise that resolves to a WebAssembly instance
-type fibInstance = {
+type FibInstance = {
   _fibonacci: (input: number) => number;
 };
 
-const instance: Promise<fibInstance> =
+const instance: Promise<FibInstance> =
   require('../../../wasm-modules/fibonacci.js')();
 
 function fibonacci(element: number): number {
