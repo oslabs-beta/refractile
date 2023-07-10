@@ -18,8 +18,15 @@ function fibonacci(element: number) {
 
 export const fibController = {
   fibJS: (req: Request, res: Response, next: NextFunction) => {
-    res.locals.result = fibonacci(50);
-    next();
+    try {
+      res.locals.result = fibonacci(50);
+      return next();
+    } catch (e) {
+      return next({
+        log: 'Failure in fibController.fibJS -- ' + e,
+        message: { err: 'Could not produce fib result from C-based WASM ' },
+      });
+    }
   },
 
   fibC: async (req: Request, res: Response, next: NextFunction) => {
