@@ -11,13 +11,21 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/api/fib-js', fibController.fibJS, (req: Request, res: Response) => {
-  return res.status(200).json(res.locals.result);
-});
+app.get(
+  '/api/fib-js/:value',
+  fibController.fibJS,
+  (req: Request, res: Response) => {
+    return res.status(200).json(res.locals);
+  }
+);
 
-app.get('/api/fib-c', fibController.fibC, (req: Request, res: Response) => {
-  return res.status(200).json(res.locals);
-});
+app.get(
+  '/api/fib-c/:value',
+  fibController.fibC,
+  (req: Request, res: Response) => {
+    return res.status(200).json(res.locals);
+  }
+);
 
 app.use('/', (req: Request, res: Response) => {
   return res.status(404).json('Error: page not found');

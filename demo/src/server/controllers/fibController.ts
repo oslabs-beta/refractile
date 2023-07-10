@@ -17,9 +17,13 @@ function fibonacci(element: number): number {
 }
 
 export const fibController = {
-  fibJS: (req: Request, res: Response, next: NextFunction) => {
+  fibJS: (
+    { params: { value } }: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-      res.locals.result = fibonacci(50);
+      res.locals.result = fibonacci(+value);
       return next();
     } catch (e) {
       return next({
@@ -29,9 +33,13 @@ export const fibController = {
     }
   },
 
-  fibC: async (req: Request, res: Response, next: NextFunction) => {
+  fibC: async (
+    { params: { value } }: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
     try {
-      res.locals.result = (await instance)._fibonacci(50);
+      res.locals.result = (await instance)._fibonacci(+value);
       return next();
     } catch (e) {
       return next({
