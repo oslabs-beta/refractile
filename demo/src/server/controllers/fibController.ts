@@ -5,6 +5,11 @@ type FibInstance = {
   _fibonacci: (input: number) => number;
 };
 
+type FibController = {
+  fibJS: (req: Request, res: Response, next: NextFunction) => void;
+  fibC: (req: Request, res: Response, next: NextFunction) => void;
+};
+
 const instance: Promise<FibInstance> =
   require('../../../wasm-modules/fibonacci.js')();
 
@@ -16,7 +21,7 @@ function fibonacci(element: number): number {
   return sequence[element];
 }
 
-export const fibController = {
+export const fibController: FibController = {
   fibJS: (
     { params: { value } }: Request,
     res: Response,
@@ -48,6 +53,5 @@ export const fibController = {
         message: { err: 'Could not produce fib result from C-based WASM ' },
       });
     }
-    next();
   },
 };
