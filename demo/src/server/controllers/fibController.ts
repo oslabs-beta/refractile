@@ -54,6 +54,5 @@ export const fibController = {
         message: { err: 'Could not produce fib result from C-based WASM ' },
       });
     }
-    next();
   },
 };
