@@ -6,10 +6,24 @@ import express, {
 } from 'express';
 import { fibController } from './controllers/fibController';
 import { ServerError } from '../types';
+import mongoose, { Mongoose } from 'mongoose';
 
 const app = express();
 
 app.use(express.json());
+
+const mongoURI: string = 'THIS IS A MONGO URI TO BE IMPORTED FROM .ENV FILE'
+
+const db = mongoose.connection
+
+mongoose.connect(mongoURI, {
+  dbName: 'Refractile Demo Benchmarks',
+})
+
+db.on('error', console.error.bind(console, 'connection error: '))
+db.once('open', () => {
+  console.log('Connected to database successfully')
+})
 
 app.get(
   '/api/fib-js/:value',

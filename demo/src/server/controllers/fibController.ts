@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { ExpressMWare } from '../../types';
+import Benchmark from '../db/Benchmark';
 
 // Returns a promise that resolves to a WebAssembly instance
 type FibInstance = {

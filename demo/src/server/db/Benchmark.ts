@@ -1,4 +1,4 @@
-const mongoose = require("mongoose")
+import mongoose from "mongoose"
 const { Schema } = mongoose
 
 const benchmarkSchema = new Schema({
@@ -7,4 +7,4 @@ const benchmarkSchema = new Schema({
   'result': { type: Number, required: true }
 })
 
-module.exports = mongoose.model('Benchmark', benchmarkSchema)
+export default mongoose.model('Benchmark', benchmarkSchema)
