@@ -12,6 +12,12 @@ type FibController = {
   fibC: ExpressMWare;
 };
 
+type Benchmark = {
+  language: string,
+  input: number,
+  time: number
+}
+
 const instance: Promise<FibInstance> =
   require('../../../wasm-modules/fibonacci.js')();
 
@@ -21,13 +27,21 @@ function fibonacci(element: number): number {
 }
 
 export const fibController = {
-  fibJS: (
+  fibJS: async (
     { params: { value } }: Request,
     res: Response,
     next: NextFunction
   ) => {
     try {
+      const startTime = Date.now()
       res.locals.result = fibonacci(+value);
+      const endTime = Date.now() - startTime
+      const newBenchmark = {
+        language: 'JS',
+        input: value,
+        time: endTime
+      }
+      await Benchmark.create({ newBenchmark })
       return next();
     } catch (e) {
       return next({
@@ -43,7 +57,15 @@ export const fibController = {
     next: NextFunction
   ) => {
     try {
+      const startTime = Date.now()
       res.locals.result = (await instance)._fibonacci(+value);
+      const endTime = Date.now() - startTime
+      const newBenchmark = {
+        language: 'C',
+        input: value,
+        time: endTime
+      }
+      await Benchmark.create({ newBenchmark })
       return next();
     } catch (e) {
       return next({
