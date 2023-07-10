@@ -9,11 +9,8 @@ const instance: Promise<FibInstance> =
   require('../../../wasm-modules/fibonacci.js')();
 
 function fibonacci(element: number): number {
-  const sequence: Array<number> = [0, 1];
-  for (let i: number = 2; i <= element; i++) {
-    sequence[i] = sequence[i - 2] + sequence[i - 1];
-  }
-  return sequence[element];
+  if (element < 2) return element
+  return fibonacci(element - 1) + fibonacci(element - 2)
 }
 
 export const fibController = {
