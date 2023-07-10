@@ -21,11 +21,18 @@ module.exports = {
         exclude: /node_modules/,
         use: ['ts-loader'],
       },
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          { loader: 'css-loader', options: { importLoaders: 1 } },
+          'postcss-loader',
+        ],
+      },
     ],
   },
   resolve: {
     extensions: ['.jsx', '.js', '.ts', '.tsx'],
-
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -42,8 +49,7 @@ module.exports = {
     },
     proxy: {
       '/api': 'http://localhost:3000',
-      secure: false
-    }
+      'secure': false,
+    },
   },
-
-}
+};
