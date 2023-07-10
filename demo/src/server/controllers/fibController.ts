@@ -1,13 +1,12 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 
+// Returns a promise that resolves to a WebAssembly instance
+type fibInstance = {
+  _fibonacci: (input: number) => number;
+};
 
-// const fibonacci = (num: number): number => {
-//   if (num < 2) {
-//     return num;
-//   } else {
-//     return fibonacci(num - 1) + fibonacci(num - 2);
-//   }
-// }
+const instance: Promise<fibInstance> =
+  require('../../../wasm-modules/fibonacci.js')();
 
 function fibonacci(element: number) {
   const sequence = [0, 1];
@@ -18,12 +17,22 @@ function fibonacci(element: number) {
 }
 
 export const fibController = {
-
   fibJS: (req: Request, res: Response, next: NextFunction) => {
-    const fibResult = fibonacci(50)
-    res.locals.result = {
-      result: fibResult
+    res.locals.result = fibonacci(50);
+    next();
+  },
+
+  fibC: async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      res.locals.result = (await instance)._fibonacci(50);
+      return next();
+    } catch (e) {
+      return next({
+        log: 'Failure in fibController.fibC -- ' + e,
+        status: 500,
+        message: { err: 'Could not produce fib result from C-based WASM ' },
+      });
     }
-    next()
-  }
-}
+    next();
+  },
+};
