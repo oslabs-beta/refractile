@@ -7,6 +7,9 @@ import express, {
 import { fibController } from './controllers/fibController';
 import { ServerError } from '../types';
 import mongoose, { Mongoose } from 'mongoose';
+import dotenv from 'dotenv'
+
+dotenv.config()
 
 const app = express();
 
@@ -14,8 +17,7 @@ app.use(express.json());
 
 // const mongoURI: string = 'THIS IS A MONGO URI TO BE IMPORTED FROM .ENV FILE'
 
-const mongoURI: string = 'mongodb+srv://mateolopcas:mGozr53eXmUqYWpt@refractile-mvp-demo.mmz89jt.mongodb.net/?retryWrites=true&w=majority'
-
+const mongoURI: string = process.env.MONGO_URI
 
 const db = mongoose.connection
 
