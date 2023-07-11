@@ -4,7 +4,7 @@ import { FibJSProps, FibResult } from '../../types';
 const FibJS = (props: FibJSProps): JSX.Element => {
   //create state hooks for FibC where needed
   const [fibFetched, setFibFetched] = useState<boolean>(false);
-  const [fibCFetched, setFibCFectched] = useState<boolean>(false);
+  const [fibCFetched, setFibCFetched] = useState<boolean>(false);
   const [isloading, setIsLoading] = useState<boolean>(false);
   const [fibCIsLoading, setFibCIsLoading] = useState<boolean>(false);
   const [fibInput, setFibInput] = useState<number>(41);
@@ -12,12 +12,18 @@ const FibJS = (props: FibJSProps): JSX.Element => {
   const [fibTime, setFibTime] = useState<number>(0);
   const [fibCTime, setFibCTime] = useState<number>(0);
 
-  const handleClick = async () => {
-    setIsLoading(true);
-    setFibFetched(false);
+  const handleClick = async (route: string) => {
+    if (route === 'fib-js'){
+      setIsLoading(true);
+      setFibFetched(false);      
+    } else if (route === 'fib-c'){
+      setFibCIsLoading(true);
+      setFibCFetched(false);
+    }
+    // work on making handleClick work for fib c and fib js
     const start: number = Date.now();
     try {
-      const response = await fetch('/api/fib-js/' + fibInput, {
+      const response = await fetch(`/api/${route}/${fibInput}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -27,9 +33,15 @@ const FibJS = (props: FibJSProps): JSX.Element => {
         const data = await response.json();
         setFibResult(data.result);
         const timeTaken: number = Date.now() - start;
-        setFibTime(timeTaken);
-        setIsLoading(false);
-        setFibFetched(true);
+        if (route === 'fib-js'){
+          setFibTime(timeTaken);
+          setIsLoading(false);
+          setFibFetched(true);          
+        } else if (route === 'fib-c'){
+          setFibCTime(timeTaken);
+          setFibCIsLoading(false);
+          setFibCFetched(true);
+        }
       }
     } catch (e) {
       console.log(e);
@@ -49,7 +61,10 @@ const FibJS = (props: FibJSProps): JSX.Element => {
           onChange={(e) => setFibInput(Number(e.target.value))}
           className="input input-bordered w-full max-w-xs"
         />
-        <button className="btn btn-primary" onClick={handleClick}>
+        <button className="btn btn-primary" onClick={() => {
+          handleClick('fib-c');
+          handleClick('fib-js');
+        }}>
           Run Fibonacci
         </button>
       </div>
