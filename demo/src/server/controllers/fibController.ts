@@ -15,8 +15,8 @@ const instance: Promise<FibInstance> =
   require('../../../wasm-modules/fibonacci.js')();
 
 function fibonacci(element: number): number {
-  if (element < 2) return element
-  return fibonacci(element - 1) + fibonacci(element - 2)
+  if (element < 2) return element;
+  return fibonacci(element - 1) + fibonacci(element - 2);
 }
 
 export const fibController = {

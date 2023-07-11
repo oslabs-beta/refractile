@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { FibJSProps, FibResult } from '../../types';
 
 const FibJS = (props: FibJSProps): JSX.Element => {
+  //create state hooks for FibC where needed
   const [fibFetched, setFibFetched] = useState<boolean>(false);
+  const [fibCFetched, setFibCFectched] = useState<boolean>(false);
   const [isloading, setIsLoading] = useState<boolean>(false);
+  const [fibCIsLoading, setFibCIsLoading] = useState<boolean>(false);
   const [fibInput, setFibInput] = useState<number>(41);
   const [fibResult, setFibResult] = useState<number>(0);
   const [fibTime, setFibTime] = useState<number>(0);
+  const [fibCTime, setFibCTime] = useState<number>(0);
 
   const handleClick = async () => {
     setIsLoading(true);
