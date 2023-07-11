@@ -12,13 +12,18 @@ const app = express();
 
 app.use(express.json());
 
-const mongoURI: string = 'THIS IS A MONGO URI TO BE IMPORTED FROM .ENV FILE'
+// const mongoURI: string = 'THIS IS A MONGO URI TO BE IMPORTED FROM .ENV FILE'
+
+const mongoURI: string = 'mongodb+srv://mateolopcas:mGozr53eXmUqYWpt@refractile-mvp-demo.mmz89jt.mongodb.net/?retryWrites=true&w=majority'
+
 
 const db = mongoose.connection
 
-mongoose.connect(mongoURI, {
-  dbName: 'Refractile Demo Benchmarks',
-})
+async function main() {
+  await mongoose.connect(mongoURI);
+}
+
+main().catch((err) => console.log(err));
 
 db.on('error', console.error.bind(console, 'connection error: '))
 db.once('open', () => {

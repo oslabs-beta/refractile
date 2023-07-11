@@ -7,4 +7,6 @@ const benchmarkSchema = new Schema({
   'time': { type: Number, required: true }
 })
 
-export default mongoose.model('Benchmark', benchmarkSchema)
+const Benchmark = mongoose.model('Benchmark', benchmarkSchema)
+
+export default Benchmark

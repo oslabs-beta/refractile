@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { ExpressMWare } from '../../types';
 import Benchmark from '../db/Benchmark';
+import { Error } from 'mongoose';
 
 // Returns a promise that resolves to a WebAssembly instance
 type FibInstance = {
@@ -36,14 +37,15 @@ export const fibController = {
       const startTime = Date.now()
       res.locals.result = fibonacci(+value);
       const endTime = Date.now() - startTime
-      const newBenchmark = {
+      const newBenchmark: Benchmark = {
         language: 'JS',
-        input: value,
+        input: +value,
         time: endTime
       }
-      await Benchmark.create({ newBenchmark })
+      await Benchmark.create(newBenchmark)
+      console.log('Successfully added document to DB')
       return next();
-    } catch (e) {
+    } catch (e: unknown) {
       return next({
         log: 'Failure in fibController.fibJS -- ' + e,
         message: { err: 'Could not produce fib result from C-based WASM ' },
@@ -60,14 +62,14 @@ export const fibController = {
       const startTime = Date.now()
       res.locals.result = (await instance)._fibonacci(+value);
       const endTime = Date.now() - startTime
-      const newBenchmark = {
+      const newBenchmark: Benchmark = {
         language: 'C',
-        input: value,
+        input: +value,
         time: endTime
       }
-      await Benchmark.create({ newBenchmark })
+      await Benchmark.create(newBenchmark)
       return next();
-    } catch (e) {
+    } catch (e: unknown) {
       return next({
         log: 'Failure in fibController.fibC -- ' + e,
         status: 500,
