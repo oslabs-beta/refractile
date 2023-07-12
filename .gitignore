@@ -1,0 +1,7 @@
+# Ignore files
+.DS_Store
+.env
+
+# Ignore repos
+node_modules/
+wasm-modules/
