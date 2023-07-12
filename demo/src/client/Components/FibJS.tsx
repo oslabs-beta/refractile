@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { FibJSProps, FibResult } from '../../types';
+import { BenchmarkType, FibJSProps, FibResult } from '../../types';
 
 const FibJS = (props: FibJSProps): JSX.Element => {
   //create state hooks for FibC where needed
@@ -16,8 +16,8 @@ const FibJS = (props: FibJSProps): JSX.Element => {
     if (isNaN(fibInput)) return;
     if (route === 'fib-js'){
       setIsLoading(true);
-      setFibFetched(false);      
-    } else if (route === 'fib-c'){
+      setFibFetched(false);
+    } else if (route === 'fib-c') {
       setFibCIsLoading(true);
       setFibCFetched(false);
     }
@@ -34,20 +34,42 @@ const FibJS = (props: FibJSProps): JSX.Element => {
         const data = await response.json();
         setFibResult(data.result);
         const timeTaken: number = Date.now() - start;
-        if (route === 'fib-js'){
+        if (route === 'fib-js') {
           setFibTime(timeTaken);
           setIsLoading(false);
-          setFibFetched(true);          
-        } else if (route === 'fib-c'){
+          setFibFetched(true);
+          const newBenchmark: BenchmarkType = {
+            language: 'JS',
+            input: fibInput,
+            time: timeTaken
+          }
+          postBenchmark(newBenchmark)
+        } else if (route === 'fib-c') {
           setFibCTime(timeTaken);
           setFibCIsLoading(false);
           setFibCFetched(true);
+          const newBenchmark: BenchmarkType = {
+            language: 'C',
+            input: fibInput,
+            time: timeTaken
+          }
+          postBenchmark(newBenchmark)
         }
       }
     } catch (e) {
       console.log(e);
     }
   };
+
+  const postBenchmark = async (newBenchmark: BenchmarkType) => {
+    await fetch('/api/fib/benchmark', {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newBenchmark)
+    })
+  }
 
   return (
     <div className="flex-col gap-3">

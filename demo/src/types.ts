@@ -21,3 +21,9 @@ export type ExpressMWare = (
   res: Response,
   next: NextFunction
 ) => void;
+
+export type BenchmarkType = {
+  language: string,
+  input: number,
+  time: number
+}
