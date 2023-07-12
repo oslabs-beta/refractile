@@ -14,7 +14,7 @@ typedef struct Response {
     val locals;
 } Response;
 
-unsigned long fibFunc (unsigned long n) { 
+double fibFunc (double n) { 
     if (n <= 1) return n; 
     return fibFunc(n - 1) + fibFunc(n - 2);
 }
