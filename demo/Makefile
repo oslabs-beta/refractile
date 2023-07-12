@@ -3,5 +3,8 @@ SRC=wasm-src
 
 $(shell   mkdir -p $(OUT))
 
-fibonacci.js, fibonacci.wasm: wasm-src/fibonacci.c
-	emcc -o $(OUT)/fibonacci.js $(SRC)/fibonacci.c -Os -s MODULARIZE
+fibonacci.js: wasm-src/fibonacci.cpp
+	emcc --bind -std=c++11 -o $(OUT)/fibonacci.js $(SRC)/fibonacci.cpp -Os -s MODULARIZE
+
+clean: 
+	rm -rf $(OUT); mkdir -p $(OUT);
