@@ -1,11 +1,6 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import Benchmark from '../db/Benchmark';
-
-type Benchmark = {
-  language: string,
-  input: number,
-  time: number
-}
+import { BenchmarkType } from '../../types';
 
 export const benchmarkController = {
   postBenchmark: async (
@@ -14,7 +9,7 @@ export const benchmarkController = {
     next: NextFunction
   ) => {
     try {
-      const newBenchmark: Benchmark = {
+      const newBenchmark: BenchmarkType = {
         language,
         input,
         time

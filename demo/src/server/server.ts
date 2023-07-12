@@ -8,6 +8,7 @@ import { fibController } from './controllers/fibController';
 import { ServerError } from '../types';
 import mongoose, { Mongoose } from 'mongoose';
 import dotenv from 'dotenv'
+import { benchmarkController } from './controllers/benchmarkController';
 
 dotenv.config()
 
@@ -50,6 +51,7 @@ app.get(
 
 app.post(
   '/api/fib/benchmark',
+  benchmarkController.postBenchmark,
   (req: Request, res: Response) => {
     return res.status(200).json(res.locals)
   }
