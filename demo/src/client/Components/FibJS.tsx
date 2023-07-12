@@ -84,7 +84,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
         {fibFetched && (
           <>
             <p>{`The result of JS Fibonacci is: ${fibResult}`}</p>
-            <p>{`The time it took is: ${fibTime / 1000} seconds`}</p>
+            <p>The time it took is: <strong>{fibTime / 1000}</strong> seconds</p>
           </>
         )}
       </div>
@@ -103,7 +103,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
         {fibCFetched && (
           <>
             <p>{`The result of C Fibonacci is: ${fibResult}`}</p>
-            <p>{`The time it took is: ${fibCTime / 1000} seconds`}</p>
+            <p>The time it took is: <strong>{fibCTime / 1000}</strong> seconds</p>
           </>
         )}
       </div>
@@ -111,7 +111,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
       <div className="py-4">
         {fibCTime < fibTime && fibFetched && fibCFetched &&  (
           <>
-            <p>{`Fibonacci in C is faster by ${(100 - ((fibCTime / fibTime) * 100)).toFixed(2)}%`}</p>
+            <p>Fibonacci in C is faster by <strong>{(100 - ((fibCTime / fibTime) * 100)).toFixed(2)}%</strong></p>
           </>
         )}
       </div>
@@ -119,7 +119,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
       <div className="py-4">
         {fibTime < fibCTime && fibFetched && fibCFetched && (
           <>
-            <p>{`Fibonacci in JS is faster by ${(100 - ((fibTime / fibCTime) * 100)).toFixed(2)}%`}</p>
+            <p>Fibonacci in JS is faster by <strong>{(100 - ((fibTime / fibCTime) * 100)).toFixed(2)}%</strong></p>
           </>
         )}
       </div>
