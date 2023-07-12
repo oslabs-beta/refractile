@@ -51,7 +51,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
   return (
     <div className="flex-col gap-3">
       <h3>
-        Click the button to calculate a big Fibonacci sequence in JavaScript
+        Click the button to calculate a big Fibonacci sequence in JavaScript and C
       </h3>
       <div className="flex gap-2">
         <input
@@ -87,8 +87,28 @@ const FibJS = (props: FibJSProps): JSX.Element => {
           </>
         )}
       </div>
+
+      <div className="py-4">
+        {fibCIsLoading && (
+          <>
+            <div role="status" className="max-w-sm animate-pulse">
+              <div className="h-2 bg-primary rounded-full dark:bg-gray-700 max-w-[360px] mb-2.5"></div>
+              <div className="h-2.5 bg-primary rounded-full dark:bg-gray-700 w-48 mb-4"></div>
+              <span className="sr-only">Loading...</span>
+            </div>
+          </>
+        )}
+
+        {fibCFetched && (
+          <>
+            <p>{`The result of C Fibonacci is: ${fibResult}`}</p>
+            <p>{`The time it took is: ${fibCTime / 1000} seconds`}</p>
+          </>
+        )}
+      </div>
     </div>
   );
 };
 
 export default FibJS;
+// implement % time taken functionality
