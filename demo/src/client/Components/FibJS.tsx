@@ -91,6 +91,8 @@ const FibJS = (props: FibJSProps): JSX.Element => {
           Run Fibonacci
         </button>
       </div>
+      <br/>
+      <h2><strong>JavaScript:</strong></h2>
 
       <div className="py-4">
         {isloading && (
@@ -111,6 +113,8 @@ const FibJS = (props: FibJSProps): JSX.Element => {
         )}
       </div>
 
+      <h2><strong>C:</strong></h2>
+
       <div className="py-4">
         {fibCIsLoading && (
           <>
@@ -129,6 +133,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
           </>
         )}
       </div>
+      <h2><strong>Comparison:</strong></h2>
 
       <div className="py-4">
       {fibCIsLoading && (
@@ -158,7 +163,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
             </div>
           </>
         )}
-        
+
         {fibTime < fibCTime && fibFetched && fibCFetched && (
           <>
             <p>Fibonacci in JS is faster by <strong>{(100 - ((fibTime / fibCTime) * 100)).toFixed(2)}%</strong></p>
