@@ -13,10 +13,10 @@ const FibJS = (props: FibJSProps): JSX.Element => {
   const [fibCTime, setFibCTime] = useState<number>(0);
 
   const handleClick = async (route: string) => {
-    if (route === 'fib-js'){
+    if (route === 'fib-js') {
       setIsLoading(true);
       setFibFetched(false);
-    } else if (route === 'fib-c'){
+    } else if (route === 'fib-c') {
       setFibCIsLoading(true);
       setFibCFetched(false);
     }
@@ -33,24 +33,24 @@ const FibJS = (props: FibJSProps): JSX.Element => {
         const data = await response.json();
         setFibResult(data.result);
         const timeTaken: number = Date.now() - start;
-        if (route === 'fib-js'){
+        if (route === 'fib-js') {
           setFibTime(timeTaken);
           setIsLoading(false);
           setFibFetched(true);
           const newBenchmark: BenchmarkType = {
             language: 'JS',
             input: fibInput,
-            time: fibTime
+            time: timeTaken
           }
           postBenchmark(newBenchmark)
-        } else if (route === 'fib-c'){
+        } else if (route === 'fib-c') {
           setFibCTime(timeTaken);
           setFibCIsLoading(false);
           setFibCFetched(true);
           const newBenchmark: BenchmarkType = {
             language: 'C',
             input: fibInput,
-            time: fibCTime
+            time: timeTaken
           }
           postBenchmark(newBenchmark)
         }
