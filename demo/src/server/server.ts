@@ -48,6 +48,14 @@ app.get(
   }
 );
 
+app.post(
+  '/api/fib/benchmark',
+  (req: Request, res: Response) => {
+    return res.status(200).json(res.locals)
+  }
+)
+
+
 app.use('/', (req: Request, res: Response) => {
   return res.status(404).json('Error: page not found');
 });

@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { ExpressMWare } from '../../types';
-import Benchmark from '../db/Benchmark';
 import { Error } from 'mongoose';
 
 // Returns a promise that resolves to a WebAssembly instance
@@ -34,16 +33,16 @@ export const fibController = {
     next: NextFunction
   ) => {
     try {
-      const startTime = Date.now()
+      // const startTime = Date.now()
       res.locals.result = fibonacci(+value);
-      const endTime = Date.now() - startTime
-      const newBenchmark: Benchmark = {
-        language: 'JS',
-        input: +value,
-        time: endTime
-      }
-      await Benchmark.create(newBenchmark)
-      console.log('Successfully added document to DB')
+      // const endTime = Date.now() - startTime
+      // const newBenchmark: Benchmark = {
+      //   language: 'JS',
+      //   input: +value,
+      //   time: endTime
+      // }
+      // await Benchmark.create(newBenchmark)
+      // console.log('Successfully added document to DB')
       return next();
     } catch (e: unknown) {
       return next({
@@ -59,15 +58,15 @@ export const fibController = {
     next: NextFunction
   ) => {
     try {
-      const startTime = Date.now()
+      // const startTime = Date.now()
       res.locals.result = (await instance)._fibonacci(+value);
-      const endTime = Date.now() - startTime
-      const newBenchmark: Benchmark = {
-        language: 'C',
-        input: +value,
-        time: endTime
-      }
-      await Benchmark.create(newBenchmark)
+      // const endTime = Date.now() - startTime
+      // const newBenchmark: Benchmark = {
+      //   language: 'C',
+      //   input: +value,
+      //   time: endTime
+      // }
+      // await Benchmark.create(newBenchmark)
       return next();
     } catch (e: unknown) {
       return next({
