@@ -6,8 +6,8 @@ import express, {
 } from 'express';
 import { fibController } from './controllers/fibController';
 import { ServerError } from '../types';
-import mongoose, { Mongoose } from 'mongoose';
-import dotenv from 'dotenv'
+import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 import { benchmarkController } from './controllers/benchmarkController';
 
 dotenv.config()
