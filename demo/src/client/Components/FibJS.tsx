@@ -13,6 +13,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
   const [fibCTime, setFibCTime] = useState<number>(0);
 
   const handleClick = async (route: string) => {
+    if (isNaN(fibInput)) return;
     if (route === 'fib-js'){
       setIsLoading(true);
       setFibFetched(false);      
@@ -20,7 +21,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
       setFibCIsLoading(true);
       setFibCFetched(false);
     }
-    // work on making handleClick work for fib c and fib js
+
     const start: number = Date.now();
     try {
       const response = await fetch(`/api/${route}/${fibInput}`, {
@@ -83,7 +84,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
         {fibFetched && (
           <>
             <p>{`The result of JS Fibonacci is: ${fibResult}`}</p>
-            <p>{`The time it took is: ${fibTime / 1000} seconds`}</p>
+            <p>The time it took is: <strong>{fibTime / 1000}</strong> seconds</p>
           </>
         )}
       </div>
@@ -102,13 +103,32 @@ const FibJS = (props: FibJSProps): JSX.Element => {
         {fibCFetched && (
           <>
             <p>{`The result of C Fibonacci is: ${fibResult}`}</p>
-            <p>{`The time it took is: ${fibCTime / 1000} seconds`}</p>
+            <p>The time it took is: <strong>{fibCTime / 1000}</strong> seconds</p>
           </>
         )}
       </div>
+
+      <div className="py-4">
+        {fibCTime < fibTime && fibFetched && fibCFetched &&  (
+          <>
+            <p>Fibonacci in C is faster by <strong>{(100 - ((fibCTime / fibTime) * 100)).toFixed(2)}%</strong></p>
+          </>
+        )}
+      </div>
+
+      <div className="py-4">
+        {fibTime < fibCTime && fibFetched && fibCFetched && (
+          <>
+            <p>Fibonacci in JS is faster by <strong>{(100 - ((fibTime / fibCTime) * 100)).toFixed(2)}%</strong></p>
+          </>
+        )}
+      </div>
+
     </div>
+
+
   );
 };
 
 export default FibJS;
-// implement % time taken functionality
+
