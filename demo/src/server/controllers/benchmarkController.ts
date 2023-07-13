@@ -15,12 +15,31 @@ export const benchmarkController = {
         time
       }
       await Benchmark.create(newBenchmark)
-      console.log('Successfully added document to DB')
+      console.log(`Successfully added document to DB with language: ${language} and input: ${input}`)
       return next();
     } catch (e: unknown) {
       return next({
         log: 'Failure in benchmarkController.postBenchmark -- ' + e,
         message: { err: 'Could not post new benchmark to database ' },
+      });
+    }
+  },
+
+  getBenchmarks: async (
+    { params: { language } }: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await Benchmark.find({
+        language: language
+      }).sort('input')
+      res.locals.result = result
+      next()
+    } catch (e: unknown) {
+      return next({
+        log: 'Failure in benchmarkController.getBenchmarks -- ' + e,
+        message: { err: 'Could not get benchmarks from database ' },
       });
     }
   }
