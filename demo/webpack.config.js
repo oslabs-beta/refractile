@@ -22,6 +22,15 @@ module.exports = {
         use: ['ts-loader'],
       },
       {
+        test: /\.svg$/,
+        use: {
+          loader: 'babel-loader',
+          // options: {
+          //     presets: ["@dr.pogodin/babel-preset-svgr"],
+          // },
+        },
+      },
+      {
         test: /\.css$/,
         use: [
           'style-loader',

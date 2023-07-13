@@ -23,7 +23,7 @@ export type ExpressMWare = (
 ) => void;
 
 export type BenchmarkType = {
-  language: string,
-  input: number,
-  time: number
-}
+  language: string;
+  input: number;
+  time: number;
+};
