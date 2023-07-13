@@ -1,4 +1,5 @@
 import React from 'react';
+import { Github } from './Github';
 
 const Header = (props: any): JSX.Element => {
   return (
@@ -70,7 +71,11 @@ const Header = (props: any): JSX.Element => {
         </ul> */}
       </div>
       <div className="navbar-end">
-        <a className="btn">Button</a>
+        <div className="h-48px">
+          <a href="https://github.com/oslabs-beta/refractile">
+            <Github />
+          </a>
+        </div>
       </div>
     </div>
   );
