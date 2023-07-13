@@ -15,7 +15,7 @@ export const benchmarkController = {
         time
       }
       await Benchmark.create(newBenchmark)
-      console.log('Successfully added document to DB')
+      console.log(`Successfully added document to DB with language: ${language} and input: ${input}`)
       return next();
     } catch (e: unknown) {
       return next({
@@ -34,7 +34,6 @@ export const benchmarkController = {
       const result = await Benchmark.find({
         language: language
       }).sort('input')
-      console.log(result)
       res.locals.result = result
       next()
     } catch (e: unknown) {

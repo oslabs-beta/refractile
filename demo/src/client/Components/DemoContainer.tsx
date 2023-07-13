@@ -16,7 +16,8 @@ const DemoContainer = (props: any): JSX.Element => {
       label: "JavaScript",
       data: [],
       backgroundColor: [
-        "red"
+        // "#6FC9D1"
+        "#60E6FE"
       ],
       borderColor: "black",
       borderWidth: 1
@@ -25,7 +26,8 @@ const DemoContainer = (props: any): JSX.Element => {
       label: "C++",
       data: [],
       backgroundColor: [
-        "blue"
+        // "#F0E888"
+        "#FE7860"
       ],
       borderColor: "black",
       borderWidth: 1
@@ -109,7 +111,8 @@ const DemoContainer = (props: any): JSX.Element => {
   return (
     <div className="container mx-auto py-20 overflow-auto">
       <FibJS></FibJS>
-      <BarChart chartData={chartData}></BarChart>
+      <BarChart chartData={chartData} yScale={'linear'}></BarChart>
+      <BarChart chartData={chartData} yScale={'logarithmic'}></BarChart>
     </div>
   );
 };

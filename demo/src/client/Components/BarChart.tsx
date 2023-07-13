@@ -2,7 +2,7 @@ import React from "react";
 import { Bar } from "react-chartjs-2";
 
 const BarChart = (props: any) => {
-  const { chartData } = props
+  const { chartData, yScale } = props
   return (
     <div className="chart-container">
       <Bar
@@ -11,7 +11,7 @@ const BarChart = (props: any) => {
           plugins: {
             title: {
               display: true,
-              text: "Recursive Fib JS vs C"
+              text: `Recursive Fib JS vs C++ --- ${yScale} scale`
             },
             legend: {
               display: true
@@ -28,9 +28,10 @@ const BarChart = (props: any) => {
             y: {
               title: {
                 display: true,
-                text: 'Time in milliseconds',
+                text: 'Time (ms)',
                 color: 'gray'
-              }
+              },
+              type: yScale
             },
           }
         }}
