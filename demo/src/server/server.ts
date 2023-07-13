@@ -49,6 +49,14 @@ app.get(
   }
 );
 
+app.get(
+  '/api/fib/benchmark/:language',
+  benchmarkController.getBenchmarks,
+  (req: Request, res: Response) => {
+    return res.status(200).json(res.locals.result)
+  }
+)
+
 app.post(
   '/api/fib/benchmark',
   benchmarkController.postBenchmark,

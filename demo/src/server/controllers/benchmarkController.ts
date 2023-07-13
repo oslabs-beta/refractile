@@ -23,5 +23,25 @@ export const benchmarkController = {
         message: { err: 'Could not post new benchmark to database ' },
       });
     }
+  },
+
+  getBenchmarks: async (
+    { params: { language } }: Request,
+    res: Response,
+    next: NextFunction
+  ) => {
+    try {
+      const result = await Benchmark.find({
+        language: language
+      }).sort('input')
+      console.log(result)
+      res.locals.result = result
+      next()
+    } catch (e: unknown) {
+      return next({
+        log: 'Failure in benchmarkController.getBenchmarks -- ' + e,
+        message: { err: 'Could not get benchmarks from database ' },
+      });
+    }
   }
 }
