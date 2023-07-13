@@ -74,7 +74,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
   return (
     <div className="flex-col gap-3">
       <h3>
-        Click the button to calculate a big Fibonacci sequence in JavaScript and C
+        Click the button to calculate a big Fibonacci sequence in JavaScript and C++
       </h3>
       <div className="flex gap-2">
         <input
@@ -113,7 +113,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
         )}
       </div>
 
-      <h2><strong>C:</strong></h2>
+      <h2><strong>C++:</strong></h2>
 
       <div className="py-4">
         {fibCIsLoading && (
@@ -128,7 +128,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
 
         {fibCFetched && (
           <>
-            <p>{`The result of C Fibonacci is: ${fibResult}`}</p>
+            <p>{`The result of C++ Fibonacci is: ${fibResult}`}</p>
             <p>The time it took is: <strong>{fibCTime / 1000}</strong> seconds</p>
           </>
         )}
@@ -148,7 +148,7 @@ const FibJS = (props: FibJSProps): JSX.Element => {
 
         {fibCTime < fibTime && fibFetched && fibCFetched &&  (
           <>
-            <p>Fibonacci in C is faster by <strong>{(100 - ((fibCTime / fibTime) * 100)).toFixed(2)}%</strong></p>
+            <p>Fibonacci in C++ is faster by <strong>{(100 - ((fibCTime / fibTime) * 100)).toFixed(2)}%</strong></p>
           </>
         )}
       </div>
