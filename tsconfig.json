@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "target": "ES2015",
+    "noImplicitAny": true,
+    "lib": ["ES6", "dom"],
+    "strict": true
+  },
+  "include": ["lib/"],
+  "exclude": ["node_modules/"]
+}
