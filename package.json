@@ -1,0 +1,35 @@
+{
+  "name": "refractile",
+  "version": "0.0.1",
+  "description": "Polyglossic middleware for express",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oslabs-beta/refractile.git"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "polyglossic",
+    "middleware",
+    "backend",
+    "server-side",
+    "server"
+  ],
+  "author": "BufoOS",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/oslabs-beta/refractile/issues"
+  },
+  "homepage": "https://github.com/oslabs-beta/refractile#readme",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "typescript": "^5.1.6"
+  }
+}
