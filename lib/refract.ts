@@ -1,1 +1,95 @@
-console.log("hello world");
+import { Request, Response, NextFunction } from 'express';
+const path = require('path');
+const fs = require('fs');
+const { execSync } = require('child_process');
+
+type RefractileConfigModule = {
+  bin: string;
+  make: string;
+};
+
+type RefractileConfig = {
+  [module: string]: RefractileConfigModule;
+};
+
+type ExpressMWare = (req: Request, res: Response, next: NextFunction) => void;
+type RefractInstance = {
+  [method: string]: ExpressMWare;
+};
+
+let dir: string | null;
+let config: RefractileConfig = (() => {
+  const packageName = require('../package.json').name;
+  // Get the current working directory
+
+  dir = process.cwd();
+  for (;;) {
+    // If the current working directory has a package.json, break
+    if (fs.statSync(path.join(dir, 'package.json')).isFile()) break;
+    // eslint-disable-next-line no-empty
+    // Otherwise, keep looking for it
+    const parent: string = path.dirname(dir);
+    if (dir === parent) {
+      dir = null;
+      break;
+    }
+    dir = parent;
+  }
+
+  // Once the current directory has been found, load the configuration file
+  try {
+    return require(path.resolve(dir, 'refractile.config.js'));
+  } catch (e) {
+    throw Error('Error: problem loading refractile.config.js -- ' + e);
+  }
+})();
+function refract(
+  src: string | (() => Promise<RefractInstance>),
+  method: string
+): ExpressMWare {
+  let instance: Promise<RefractInstance>;
+  if (typeof src === 'string') {
+    // 1.0 look up configuration
+    if (!config[src])
+      throw Error(
+        'No configuration found for module ' +
+          src +
+          '. Check configuration at ' +
+          dir
+      );
+    // 2.0 check module destination location
+    if (!config[src]['bin'])
+      throw Error(
+        'No bin destination found for module ' +
+          '. Check configuration at ' +
+          dir
+      );
+
+    // If there is no file in bin, try to make it
+    if (!fs.statSync(path.resolve(config[src]['bin'], `${src}.js`)).isFile()) {
+      if (!config[src]['make'])
+        throw Error(
+          'No make formula found for module ' +
+            '. Check configuration at ' +
+            dir
+        );
+
+      // Build it
+      execSync(config[src]['make']);
+
+      // Check that it was made
+      if (!fs.statSync(path.resolve(config[src]['bin'], `${src}.js`)).isFile())
+        throw Error('Failed to build ' + src);
+    }
+
+    // Load it
+    instance = require(path.resolve(config[src]['bin'], `${src}.js`))();
+  } else if (typeof src === 'function') {
+    // 2.0 load the instance from the function
+    instance = src();
+  }
+
+  return async (req: Request, res: Response, next: NextFunction) => {
+    (await instance)[method](req, res, next);
+  };
+}
