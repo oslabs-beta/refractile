@@ -93,3 +93,5 @@ function refract(
     (await instance)[method](req, res, next);
   };
 }
+
+module.exports = refract;
