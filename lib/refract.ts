@@ -66,7 +66,7 @@ function refract(
       );
 
     // If there is no file in bin, try to make it
-    if (!fs.statSync(path.resolve(config[src]['bin'], `${src}.js`)).isFile()) {
+    if (!fs.existsSync(path.resolve(config[src]['bin'], `${src}.js`))) {
       if (!config[src]['make'])
         throw Error(
           'No make formula found for module ' +
@@ -78,7 +78,7 @@ function refract(
       execSync(config[src]['make']);
 
       // Check that it was made
-      if (!fs.statSync(path.resolve(config[src]['bin'], `${src}.js`)).isFile())
+      if (!fs.existsSync(path.resolve(config[src]['bin'], `${src}.js`)))
         throw Error('Failed to build ' + src);
     }
 
