@@ -1,1 +1,1 @@
-module.refract = require('./lib/refract.js');
+module.exports = require('./lib/refract.js');
