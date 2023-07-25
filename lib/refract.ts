@@ -6,6 +6,7 @@ const { execSync } = require('child_process');
 type RefractileConfigModule = {
   bin: string;
   make: string;
+  src: string;
   gluecode_src: string;
 };
 
@@ -60,22 +61,41 @@ let config: RefractileConfig;
     });
 })();
 
+function shouldBuild(moduleName: string): boolean {
+  const mconfig: RefractileConfigModule = config.modules[moduleName];
+  const src: string = mconfig['src'];
+  const wasm = path.resolve(mconfig['bin'], `${moduleName}.wasm`);
+
+  // Build it if the glue code is missing
+  if (!fs.existsSync(wasm)) return true;
+  // Build if the source code is newer than the gluecode
+  if (
+    src &&
+    new Date(fs.statSync(src).mtime).getTime() >
+      new Date(fs.statSync(wasm).mtime).getTime()
+  )
+    return true;
+
+  // Otherwise return false
+  return false;
+}
+
 function refract(
-  src: string | (() => Promise<RefractInstance>),
+  module: string | (() => Promise<RefractInstance>),
   method: string
 ): ExpressMWare {
   let instance: Promise<RefractInstance>;
-  if (typeof src === 'string') {
+  if (typeof module === 'string') {
     // 1.0 look up configuration
-    if (!config.modules || !config.modules[src])
+    if (!config.modules || !config.modules[module])
       throw Error(
         'No configuration found for module ' +
-          src +
+          module +
           '. Check configuration at ' +
           dir
       );
     // 2.0 check module destination location
-    if (!config.modules[src]['bin'])
+    if (!config.modules[module]['bin'])
       throw Error(
         'No bin destination found for module ' +
           '. Check configuration at ' +
@@ -83,8 +103,8 @@ function refract(
       );
 
     // If there is no file in bin, try to make it
-    if (!fs.existsSync(path.resolve(config.modules[src]['bin'], `${src}.js`))) {
-      if (!config.modules[src]['make'])
+    if (shouldBuild(module)) {
+      if (!config.modules[module]['make'])
         throw Error(
           'No make formula found for module ' +
             '. Check configuration at ' +
@@ -92,28 +112,39 @@ function refract(
         );
 
       // Build it
-      execSync(config.modules[src]['make']);
+      execSync(config.modules[module]['make']);
 
       if (
-        !fs.existsSync(path.resolve(config.modules[src]['bin'], `${src}.wasm`))
+        !fs.existsSync(
+          path.resolve(config.modules[module]['bin'], `${module}.wasm`)
+        )
       )
-        throw Error('Failed to build ' + src);
+        throw Error('Failed to build ' + module);
 
       if (
-        !fs.existsSync(path.resolve(config.modules[src]['bin'], `${src}.js`)) &&
-        config.modules[src]['gluecode_src']
+        !fs.existsSync(
+          path.resolve(config.modules[module]['bin'], `${module}.js`)
+        )
       ) {
-        execSync(
-          `cp ${config.modules[src]['gluecode_src']} ${config.modules[src]['bin']}/${src}.js`
-        );
-      } else throw Error('No gluecode located in bin');
+        if (config.modules[module]['gluecode_src'])
+          execSync(
+            `cp ${config.modules[module]['gluecode_src']} ${config.modules[module]['bin']}/${module}.js`
+          );
+        else
+          throw Error(
+            `No gluecode located in bin folder assigned to module ${module}`
+          );
+      }
     }
 
     // Load it
-    instance = require(path.resolve(config.modules[src]['bin'], `${src}.js`))();
-  } else if (typeof src === 'function') {
+    instance = require(path.resolve(
+      config.modules[module]['bin'],
+      `${module}.js`
+    ))();
+  } else if (typeof module === 'function') {
     // 2.0 load the instance from the function
-    instance = src();
+    instance = module();
   }
 
   return async (req: Request, res: Response, next: NextFunction) => {
