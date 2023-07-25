@@ -6,6 +6,7 @@ const { execSync } = require('child_process');
 type RefractileConfigModule = {
   bin: string;
   make: string;
+  gluecode_src: string;
 };
 
 type RefractileConfig = {
@@ -93,9 +94,19 @@ function refract(
       // Build it
       execSync(config.modules[src]['make']);
 
-      // Check that it was made
-      if (!fs.existsSync(path.resolve(config.modules[src]['bin'], `${src}.js`)))
+      if (
+        !fs.existsSync(path.resolve(config.modules[src]['bin'], `${src}.wasm`))
+      )
         throw Error('Failed to build ' + src);
+
+      if (
+        !fs.existsSync(path.resolve(config.modules[src]['bin'], `${src}.js`)) &&
+        config.modules[src]['gluecode_src']
+      ) {
+        execSync(
+          `cp ${config.modules[src]['gluecode_src']} ${config.modules[src]['bin']}/${src}.js`
+        );
+      } else throw Error('No gluecode located in bin');
     }
 
     // Load it
