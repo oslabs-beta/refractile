@@ -80,72 +80,60 @@ function shouldBuild(moduleName: string): boolean {
   return false;
 }
 
-function refract(
-  module: string | (() => Promise<RefractInstance>),
-  method: string
-): ExpressMWare {
+function refract(module: string, method: string): ExpressMWare {
   let instance: Promise<RefractInstance>;
-  if (typeof module === 'string') {
-    // 1.0 look up configuration
-    if (!config.modules || !config.modules[module])
+  // 1.0 look up configuration
+  if (!config.modules || !config.modules[module])
+    throw Error(
+      'No configuration found for module ' +
+        module +
+        '. Check configuration at ' +
+        dir
+    );
+  // 2.0 check module destination location
+  if (!config.modules[module]['bin'])
+    throw Error(
+      'No bin destination found for module ' + '. Check configuration at ' + dir
+    );
+
+  // If there is no file in bin, try to make it
+  if (shouldBuild(module)) {
+    if (!config.modules[module]['make'])
       throw Error(
-        'No configuration found for module ' +
-          module +
-          '. Check configuration at ' +
-          dir
-      );
-    // 2.0 check module destination location
-    if (!config.modules[module]['bin'])
-      throw Error(
-        'No bin destination found for module ' +
-          '. Check configuration at ' +
-          dir
+        'No make formula found for module ' + '. Check configuration at ' + dir
       );
 
-    // If there is no file in bin, try to make it
-    if (shouldBuild(module)) {
-      if (!config.modules[module]['make'])
-        throw Error(
-          'No make formula found for module ' +
-            '. Check configuration at ' +
-            dir
-        );
+    // Build it
+    execSync(config.modules[module]['make']);
 
-      // Build it
-      execSync(config.modules[module]['make']);
-
-      if (
-        !fs.existsSync(
-          path.resolve(config.modules[module]['bin'], `${module}.wasm`)
-        )
+    if (
+      !fs.existsSync(
+        path.resolve(config.modules[module]['bin'], `${module}.wasm`)
       )
-        throw Error('Failed to build ' + module);
+    )
+      throw Error('Failed to build ' + module);
 
-      if (
-        !fs.existsSync(
-          path.resolve(config.modules[module]['bin'], `${module}.js`)
-        )
-      ) {
-        if (config.modules[module]['gluecode_src'])
-          execSync(
-            `cp ${config.modules[module]['gluecode_src']} ${config.modules[module]['bin']}/${module}.js`
-          );
-        else
-          throw Error(
-            `No gluecode located in bin folder assigned to module ${module}`
-          );
-      }
+    if (
+      !fs.existsSync(
+        path.resolve(config.modules[module]['bin'], `${module}.js`)
+      )
+    ) {
+      if (config.modules[module]['gluecode_src'])
+        execSync(
+          `cp ${config.modules[module]['gluecode_src']} ${config.modules[module]['bin']}/${module}.js`
+        );
+      else
+        throw Error(
+          `No gluecode located in bin folder assigned to module ${module}`
+        );
     }
-
-    // Load it
-    instance = require(path.resolve(
-      config.modules[module]['bin'],
-      `${module}.js`
-    ))();
-  } else if (typeof module === 'function') {
-    // 2.0 load the instance from the function
-    instance = module();
   }
+
+  // Load it
+  instance = require(path.resolve(
+    config.modules[module]['bin'],
+    `${module}.js`
+  ))();
 
   return async (req: Request, res: Response, next: NextFunction) => {
     (await instance)[method](req, res, next);
