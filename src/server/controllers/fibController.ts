@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { ExpressMWare } from '../../types';
 
-import refract from '../../../refractile/refractile';
+const refract = require('refractile');
 
 // Returns a promise that resolves to a WebAssembly instance
 function fibonacci(element: number): number {

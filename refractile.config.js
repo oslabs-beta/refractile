@@ -1,5 +1,10 @@
-const path = require('path');
-
 module.exports = {
-  directory: path.resolve('./', 'wasm-modules'),
+  preload_cmds: ['bash -c "mkdir -p wasm-modules"'],
+  modules: {
+    fibonacci: {
+      bin: './wasm-modules/',
+      make: 'make',
+      src: './wasm-src/fibonacci.cpp',
+    },
+  },
 };
