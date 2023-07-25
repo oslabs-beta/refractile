@@ -1,6 +1,6 @@
 {
   "name": "refractile",
-  "version": "0.0.2",
+  "version": "0.1.0",
   "description": "Polyglossic middleware for express",
   "main": "index.js",
   "directories": {
