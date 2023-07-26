@@ -17,17 +17,17 @@ Configuration framework for compiling and coordinating polyglossic middleware in
 
 **_Refractile_**: _"...capable of refraction"_
 
-[- Merriram Webster](https://www.merriam-webster.com/dictionary/refractile)
+[- Merriam Webster](https://www.merriam-webster.com/dictionary/refractile)
 
-With this package, you gain the ability to refract server-side functionality when using Express through the many prisms of other languages. In other words, when you choose to use Express, which is fast, lightweight, and quick to spin up, you can still make use of the benefit of languages other than JavaScript.
+With Refractile, Node developers gain the ability to refract server-side functionality through the many prisms of other languages. Refractile facilitates the incorporation of WebAssembly modules with diverse sources into the Node runtime environment, specifically targeting the middleware design patterns of Express.
 
-While so much of web development has become monoglossic as JavaScript has come to dominate not just frontend but also backend development, with Refractile you can experience a best-of-all-worlds developer experience, gaining the speed of C or the affordances of some particular package for Go, all packaged in a server written with Express.
+With Refractile you can experience a best-of-all-worlds development scenario, combining the developer velocity of Node with the power of whatever else you might find. For instance, you could write functionality that benefits from both the speed of C++ and the affordances of a package from Go within a single API spun up via simple-to-use Express.js.
 
 ## Installation
 
 Make sure you have [Node.js](https://nodejs.org/en/) installed before you begin.
 
-You can install refractile into your package using the [npm](https://www.npmjs.com/).
+You can install refractile into your project using the [npm](https://www.npmjs.com/).
 
 ```console
 $ npm install refractile
@@ -47,15 +47,15 @@ refract('some_module', 'some_function');
 
 Simple!
 
-`refract` returns an express middleware function, in other words a function that expects a Request object, a Response object, and a Next function. These are the arguments that will be fed into the function requested on the module, which, in the example above, would be `some-funciton`.
+`refract` returns an express middleware function (e.g. a function that expects a Request object, a Response object, and a Next function). These are the arguments that will be fed into the function requested on the module, which, in the example above, would be `some_funciton`.
 
-`refract` works with WebAssembly under the hood; currently, it requires JavaScript glue code to run. In the example above `some_module` would be associated with a file called `some_module.js` that is responsible for instantiating `some_module.wasm`. The point of this package is to organize the compilation of `.wasm` files and, in some cases, `.js` glue code as express middleware.
+`refract` works with WebAssembly under the hood; currently, it requires JavaScript glue code to run. In the example above `some_module` would be associated with a file called `some_module.js` that is responsible for instantiating `some_module.wasm`. With this in mind, one can understand Refractile's goal as organizing the compilation of `.wasm` files and, in some cases, `.js` glue code as express middleware.
 
 ### The configuration
 
 The function `refract` works with a configuration file called `refractile.config.js`. For `refract` to work, _you must also create and configure `refractile.config.js`_.
 
-The configuration file looks as follows:
+The configuration should look as follows:
 
 ```js
 module.exports = {
@@ -65,14 +65,41 @@ module.exports = {
 
         some_module: { // The name of the module is organized by this key
 
-            bin: "./some_folder", // The folder where refractile will look for the JS module
+            bin: "./some_folder", // (Required) The folder where refractile will look for the JS module
 
-            make: " ", // The command to be evaluated for building sources into WASM modules
+            make: " ", // (Required) The command to be evaluated for building sources into WASM modules
 
             src: " ", // The path to the source code. Refract will use this reference to determine if the module needs to be rebuilt after the code updates.
 
             gluecode_src: " " // If your compiler does not generate WebAssembly gluecode, you can write your own. When you point to it with this option, it will be copied into the bin folder with a name matching the module key (e.g. some_module) and a .js extension after the .wasm file was compiled.
-        }
+        },
+
+        // Other modules should be configured similarly
+        some_other_module: { ... }
     }
 };
 ```
+
+## Example
+
+You can find a project making use of `refractile` [here](https://github.com/BufoOs/refractile-example).
+
+The example app showcases two ways of working with this package — one where a given WebAssembly compiler generates gluecode and one where custom gluecode is written by the developer and pointed to in the configuration file.
+
+The app itself benchmarks the performance of a recursive algorithm that calculates the nth value of the fibonacci series in Go and C++ against the equivalent implementation in JavaScript
+
+### Example dependencies
+
+To run the project, you must have the following dependencies installed:
+
+- [Node.js](https://nodejs.org/en/)
+- [make](https://www.gnu.org/software/make/)
+- [emcc](https://emscripten.org/docs/tools_reference/emcc.html), a compiler front-end developed as part of the [emscripten project](https://emscripten.org/index.html)
+- [go](https://go.dev/doc/install)
+- [tinygo](https://tinygo.org/getting-started/install/)
+
+### To run the example
+
+After installing the above dependencies, install node packages by running `npm i`
+
+Then run the command `npm start` to build the front-end, compile the WebAssembly modules, and start the server.
