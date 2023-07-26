@@ -17,17 +17,17 @@ Configuration framework for compiling and coordinating polyglossic middleware in
 
 **_Refractile_**: _"...capable of refraction"_
 
-[- Merriram Webster](https://www.merriam-webster.com/dictionary/refractile)
+[- Merriam Webster](https://www.merriam-webster.com/dictionary/refractile)
 
-With this package, you gain the ability to refract server-side functionality when using Express through the many prisms of other languages. In other words, when you choose to use Express, which is fast, lightweight, and quick to spin up, you can still make use of the benefit of languages other than JavaScript.
+With this package, you gain the ability to refract server-side functionality when using Express through the prisms of other languages. In other words, when you choose to use Express, which is fast, lightweight, and quick to spin up, you can still make use of the benefits of languages other than JavaScript.
 
-While so much of web development has become monoglossic as JavaScript has come to dominate not just frontend but also backend development, with Refractile you can experience a best-of-all-worlds developer experience, gaining the speed of C or the affordances of some particular package for Go, all packaged in a server written with Express.
+Given that so much of web development has become monoglossic as JavaScript continues its imposing march from the frontend to the backend, with Refractile you can experience a best-of-all-worlds developer experience. You could write functionality that benefits from the speed of C or the affordances of some particular package for Go all while still organizing your server in the lightweight, efficient context of Express JS.
 
 ## Installation
 
 Make sure you have [Node.js](https://nodejs.org/en/) installed before you begin.
 
-You can install refractile into your package using the [npm](https://www.npmjs.com/).
+You can install refractile into your project using the [npm](https://www.npmjs.com/).
 
 ```console
 $ npm install refractile
@@ -55,7 +55,7 @@ Simple!
 
 The function `refract` works with a configuration file called `refractile.config.js`. For `refract` to work, _you must also create and configure `refractile.config.js`_.
 
-The configuration file looks as follows:
+The configuration should look as follows:
 
 ```js
 module.exports = {
@@ -65,14 +65,41 @@ module.exports = {
 
         some_module: { // The name of the module is organized by this key
 
-            bin: "./some_folder", // The folder where refractile will look for the JS module
+            bin: "./some_folder", // (Required) The folder where refractile will look for the JS module
 
-            make: " ", // The command to be evaluated for building sources into WASM modules
+            make: " ", // (Required) The command to be evaluated for building sources into WASM modules
 
             src: " ", // The path to the source code. Refract will use this reference to determine if the module needs to be rebuilt after the code updates.
 
             gluecode_src: " " // If your compiler does not generate WebAssembly gluecode, you can write your own. When you point to it with this option, it will be copied into the bin folder with a name matching the module key (e.g. some_module) and a .js extension after the .wasm file was compiled.
-        }
+        },
+
+        // Other modules should be configured similarly
+        some_other_module: { ... }
     }
 };
 ```
+
+## Example
+
+You can find a project making use of `refractile` [here](https://github.com/BufoOs/refractile-example).
+
+The example app showcases two ways of working with this package — one where a given WebAssembly compiler generates gluecode and one where custom gluecode is written by the developer and pointed to in the configuration file.
+
+The app itself benchmarks the performance of a recursive algorithm that calculates the nth value of the fibonacci series in Go and C++ against the equivalent implementation in JavaScript
+
+### Example dependencies
+
+To run the project, you must have the following dependencies installed:
+
+- [Node.js](https://nodejs.org/en/)
+- [make](https://www.gnu.org/software/make/)
+- [emcc](https://emscripten.org/docs/tools_reference/emcc.html), a compiler front-end developed as part of the [emscripten project](https://emscripten.org/index.html)
+- [go](https://go.dev/doc/install)
+- [tinygo](https://tinygo.org/getting-started/install/)
+
+### To run the example
+
+After installing the above dependencies, install node packages by running `npm i`
+
+Then run the command `npm start` to build the front-end, compile the WebAssembly modules, and start the server.
