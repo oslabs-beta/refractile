@@ -19,7 +19,7 @@ Configuration framework for compiling and coordinating polyglossic middleware in
 
 [- Merriam Webster](https://www.merriam-webster.com/dictionary/refractile)
 
-With this package, you gain the ability to refract server-side functionality when using Express through the prisms of other languages. In other words, when you choose to use Express, which is fast, lightweight, and quick to spin up, you can still make use of the benefits of languages other than JavaScript.
+With Refractile, Node developers gain the ability to refract server-side functionality through the many prisms of other languages. Refractile facilitates the incorporation of WebAssembly modules with diverse sources into the Node runtime environment, specifically targeting the middleware design patterns of Express.
 
 Given that so much of web development has become monoglossic as JavaScript continues its imposing march from the frontend to the backend, with Refractile you can experience a best-of-all-worlds developer experience. You could write functionality that benefits from the speed of C or the affordances of some particular package for Go all while still organizing your server in the lightweight, efficient context of Express JS.
 
