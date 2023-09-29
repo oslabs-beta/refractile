@@ -2,8 +2,7 @@
   "name": "refractile",
   "version": "0.1.0",
   "description": "Polyglossic middleware for express",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "./dist/index.js",
   "directories": {
     "lib": "lib"
   },
