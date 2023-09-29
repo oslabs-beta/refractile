@@ -3,19 +3,19 @@ const path = require('path');
 const fs = require('fs');
 const { execSync } = require('child_process');
 
-type RefractileConfigModule = {
+interface RefractileConfigModule {
   bin: string;
   make: string;
   src: string;
   gluecode_src: string;
-};
+}
 
-type RefractileConfig = {
+interface RefractileConfig {
   preload_cmds: Array<string>;
   modules: {
     [module: string]: RefractileConfigModule;
   };
-};
+}
 
 type ExpressMWare = (req: Request, res: Response, next: NextFunction) => void;
 type RefractInstance = {
