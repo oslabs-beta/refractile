@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "prepack": "npmignore --auto"
+    "prepack": "npmignore --auto --commentLines=auto"
   },
   "files": [
     "dist",
