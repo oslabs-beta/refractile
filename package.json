@@ -2,14 +2,20 @@
   "name": "refractile",
   "version": "0.1.0",
   "description": "Polyglossic middleware for express",
-  "main": "index.js",
+  "main": "./dist/index.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prepack": "npmignore --auto --commentLines=auto"
   },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/oslabs-beta/refractile.git"
@@ -31,6 +37,7 @@
   "homepage": "https://github.com/oslabs-beta/refractile#readme",
   "devDependencies": {
     "@types/express": "^4.17.17",
-    "typescript": "^5.1.6"
+    "npmignore": "^0.3.0",
+    "typescript": "^5.2.2"
   }
 }
