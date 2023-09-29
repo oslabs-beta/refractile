@@ -38,6 +38,7 @@
   "homepage": "https://github.com/oslabs-beta/refractile#readme",
   "devDependencies": {
     "@types/express": "^4.17.17",
+    "npmignore": "^0.3.0",
     "typescript": "^5.2.2"
   }
 }
